@@ -1,0 +1,54 @@
+﻿<ul class="list-unstyled">
+    @foreach(var proizvod in proizvodi)
+    {
+        <li class="media my-3">
+            <div class="media-img-wrapper mr-2">
+                <a href="#">
+                    <img class="media-img" src="@proizvod.SlikaUrl" alt="@proizvod.Naziv" />
+                </a>
+            </div>
+            <div class="media-body">
+                <a href="#">
+                    <h4 class="mb-0">@proizvod.Naziv</h4>
+                </a>
+                <p>@proizvod.Opis</p>
+                <h5 class="price">$@proizvod.Cena</h5>
+            </div>
+        </li>
+    }
+
+</ul>
+
+
+
+@code {
+    private static List<Proizvod> proizvodi = new()
+    {
+        new Proizvod
+        {
+            Id = 1,
+            Naziv = "WTL MIG 315",
+            Opis = "Aparat za poluautomatsko zavarivanje u zastiti gasa.",
+            SlikaUrl = "https://www.sualati.com/files/product_picture/2019.07.11.14.16.25_5d272899aaebd_mig315a.jpg",
+            Cena = 9.99m
+        },
+
+        new Proizvod
+        {
+            Id = 2,
+            Naziv = "WTL EASY JOB 200E",
+            Opis = "Savrsen za kucnu upotrebu i lakse radionicke poslove!elektrolucni aparat , za celik i prohron",
+            SlikaUrl = "https://www.sualati.com/files/product_picture/605c73c8ac430_wtl-easy-job-200.jpg",
+            Cena = 15.99m
+        },
+
+        new Proizvod
+        {
+            Id = 3,
+            Naziv = "WTL MIG 350F",
+            Opis = "MIG/MAG Aparat za poluautomatsko zavarivanje u zaštiti gasa u izvedbi sa odvojenim dodvačem žice",
+            SlikaUrl = "https://www.sualati.com/files/product_picture/2019.07.11.14.53.23_5d2731434735b_mig-350-a-wtl.jpg",
+            Cena = 5.99m
+        }
+    };
+}
