@@ -1,6 +1,6 @@
 global using EProdavnica.Shared;
 global using Microsoft.EntityFrameworkCore;
-using EProdavnica.Server.Data;
+global using EProdavnica.Server.Data;
 
 
 namespace EProdavnica;
