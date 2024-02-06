@@ -1,4 +1,4 @@
-﻿
+﻿using System.ComponentModel.DataAnnotations.Schema;
 namespace EProdavnica.Shared;
 
 public class Proizvod
@@ -7,5 +7,6 @@ public class Proizvod
     public string Naziv { get; set; } = string.Empty;
     public string Opis { get; set;} = string.Empty;
     public string SlikaUrl { get; set; } = string.Empty;
+    [Column(TypeName = "decimal(18,2)")]
     public decimal Cena { get; set; }
 }
