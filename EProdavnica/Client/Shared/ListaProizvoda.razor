@@ -1,35 +1,39 @@
-﻿@inject HttpClient Http;
+﻿@inject IProizvodService ProizvodService;
 
-<ul class="list-unstyled">
-    @foreach(var proizvod in proizvodi)
-    {
-        <li class="media my-3">
-            <div class="media-img-wrapper mr-2">
-                <a href="#">
-                    <img class="media-img" src="@proizvod.SlikaUrl" alt="@proizvod.Naziv" />
-                </a>
-            </div>
-            <div class="media-body">
-                <a href="#">
-                    <h4 class="mb-0">@proizvod.Naziv</h4>
-                </a>
-                <p>@proizvod.Opis</p>
-                <h5 class="price">$@proizvod.Cena</h5>
-            </div>
-        </li>
-    }
+@if(ProizvodService.Proizvodi == null || ProizvodService.Proizvodi.Count == 0)
+{
+    <span>Učitavanje proizvoda...</span>
+}
+else
+{
+    <ul class="list-unstyled">
+        @foreach (var proizvod in ProizvodService.Proizvodi)
+        {
+            <li class="media my-3">
+                <div class="media-img-wrapper mr-2">
+                    <a href="#">
+                        <img class="media-img" src="@proizvod.SlikaUrl" alt="@proizvod.Naziv" />
+                    </a>
+                </div>
+                <div class="media-body">
+                    <a href="#">
+                        <h4 class="mb-0">@proizvod.Naziv</h4>
+                    </a>
+                    <p>@proizvod.Opis</p>
+                    <h5 class="price">$@proizvod.Cena</h5>
+                </div>
+            </li>
+        }
 
-</ul>
+    </ul>
+}
+
 
 
 @code {
-    private static List<Proizvod> proizvodi = new();
 
     protected override async Task OnInitializedAsync()
     {
-        var rezultat = await Http.GetFromJsonAsync<ServiceResponse<List<Proizvod>>>("api/Proizvod");
-
-        if (rezultat != null && rezultat.Data != null)
-            proizvodi = rezultat.Data;
+        await ProizvodService.GetProizvodi();
     }
 }
