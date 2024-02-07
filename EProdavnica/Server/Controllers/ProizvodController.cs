@@ -7,21 +7,17 @@ namespace EProdavnica.Server.Controllers;
 [ApiController]
 public class ProizvodController : ControllerBase
 {
-    private readonly DataContext _context;
-    public ProizvodController(DataContext context)
+    private readonly IProizvodService _proizvodiService;
+
+    public ProizvodController(IProizvodService proizvodiService)
     {
-        _context = context;
+        _proizvodiService = proizvodiService;
     }
 
     [HttpGet]
     public async Task<ActionResult <ServiceResponse<List<Proizvod>>>> GetProizvod()
     {
-        var proizvodi = await _context.Proizvodi.ToListAsync();
-        var response = new ServiceResponse<List<Proizvod>>()
-        {
-            Data = proizvodi
-        };
-
-        return Ok(response);
+        var result = await _proizvodiService.GetProizvodiAsync();
+        return Ok(result);
     }
 }

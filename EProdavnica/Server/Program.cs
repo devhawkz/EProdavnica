@@ -1,7 +1,7 @@
 global using EProdavnica.Shared;
 global using Microsoft.EntityFrameworkCore;
 global using EProdavnica.Server.Data;
-
+global using EProdavnica.Server.Services.ProductService;
 
 namespace EProdavnica;
 
@@ -21,6 +21,8 @@ public class Program
 
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+
+        builder.Services.AddScoped<IProizvodService, ProizvodService>();
 
         var app = builder.Build();
 
