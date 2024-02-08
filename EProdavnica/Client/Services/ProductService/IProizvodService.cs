@@ -6,5 +6,6 @@ namespace EProdavnica.Client.Services.ProductService
     {
         List<Proizvod> Proizvodi { get; set; }
         Task GetProizvodi();
+        Task<ServiceResponse<Proizvod>> GetProizvod(int proizvodId);
     }
 }

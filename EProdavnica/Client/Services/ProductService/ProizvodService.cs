@@ -16,7 +16,15 @@ public class ProizvodService : IProizvodService
     {
         var rezultat = 
             await _http.GetFromJsonAsync<ServiceResponse<List<Proizvod>>>("api/proizvod");
-        if (rezultat != null && rezultat.Data != null)
-            Proizvodi = rezultat.Data;
+        if (rezultat != null && rezultat.Podaci != null)
+            Proizvodi = rezultat.Podaci;
+    }
+
+    public async Task<ServiceResponse<Proizvod>> GetProizvod(int proizvodId)
+    {
+        var rezultat =
+            await _http.GetFromJsonAsync<ServiceResponse<Proizvod>>($"api/proizvod/{proizvodId}");
+        return rezultat;
+        
     }
 }

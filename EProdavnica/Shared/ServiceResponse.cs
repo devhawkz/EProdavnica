@@ -3,7 +3,7 @@ namespace EProdavnica.Shared;
 
 public class ServiceResponse<T>
 {
-    public T? Data { get; set; }
-    public bool Success { get; set; } = true;
-    public string Message { get; set; } = string.Empty;
+    public T? Podaci { get; set; }
+    public bool Uspesno { get; set; } = true;
+    public string Poruka { get; set; } = string.Empty;
 }

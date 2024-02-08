@@ -14,9 +14,18 @@ public class ProizvodController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult <ServiceResponse<List<Proizvod>>>> GetProizvod()
+    public async Task<ActionResult<ServiceResponse<List<Proizvod>>>> GetProizvodi()
     {
-        var result = await _proizvodiService.GetProizvodiAsync();
-        return Ok(result);
+        var rezultat = await _proizvodiService.GetProizvodiAsync();
+        return Ok(rezultat);
     }
+
+    [HttpGet("{proizvodId}")]
+    public async Task<ActionResult <ServiceResponse<Proizvod>>> GetProizvod(int proizvodId)
+    {
+        var rezultat = await _proizvodiService.GetProizvodAsync(proizvodId);
+        return Ok(rezultat);
+    }
+
+    
 }

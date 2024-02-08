@@ -3,7 +3,7 @@
 
 @if(proizvod == null)
 {
-    <span>Učitavanje proizvoda...</span>
+    <span>@_poruka</span>
 }
 
 else
@@ -21,12 +21,24 @@ else
 }
 @code {
     private Proizvod? proizvod = null;
+    private string _poruka = string.Empty;
 
     [Parameter]
     public int Id { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
-        proizvod = ProizvodService.Proizvodi.Find(p => p.Id == Id);
+        _poruka = "Učitavanje proizvoda...";
+
+        var rezultat = await ProizvodService.GetProizvod(Id);
+        if(!rezultat.Uspesno)
+        {
+            _poruka = rezultat.Poruka;
+        }
+
+        else
+        {
+            proizvod = rezultat.Podaci;
+        }
     }
 }
