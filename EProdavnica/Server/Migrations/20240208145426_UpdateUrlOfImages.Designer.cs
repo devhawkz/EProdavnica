@@ -3,6 +3,7 @@ using EProdavnica.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EProdavnica.Server.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240208145426_UpdateUrlOfImages")]
+    partial class UpdateUrlOfImages
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -171,7 +174,7 @@ namespace EProdavnica.Server.Migrations
                             KategorijaId = 2,
                             Naziv = "WTL MIG 220 DIGI SYNERGIC",
                             Opis = "Vrhunski polusinergetski inverterski aparat za zavarivanje sa automatskim izborom brzine žice na osnovu debljine žice i vrste gasa koji se koristi.\r\nOdlična dinamika zavarivanja, sinergetsko podešavanje parametra.",
-                            SlikaUrl = "https://www.biljaca.rs/wp-content/uploads/2022/10/digi4.jpg"
+                            SlikaUrl = "https://www.biljaca.rs/product/wtl-mig-220-digi-synergic/?v=12af82c71473"
                         },
                         new
                         {
