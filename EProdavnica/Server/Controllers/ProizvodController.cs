@@ -27,5 +27,10 @@ public class ProizvodController : ControllerBase
         return Ok(rezultat);
     }
 
-    
+    [HttpGet("kategorija/{kategorijaUrl}")]
+    public async Task<ActionResult<ServiceResponse<Proizvod>>> GetProizvodiByKategorija(string kategorijaUrl)
+    {
+        var rezultat = await _proizvodiService.GetProizvodiByKategorijaAsync(kategorijaUrl);
+        return Ok(rezultat);
+    }
 }

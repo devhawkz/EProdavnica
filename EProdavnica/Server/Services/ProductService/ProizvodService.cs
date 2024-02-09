@@ -36,4 +36,17 @@ public class ProizvodService : IProizvodService
 
         return response;
     }
+
+    public async Task<ServiceResponse<List<Proizvod>>> GetProizvodiByKategorijaAsync(string kategorijaUrl)
+    {
+        var response = new ServiceResponse<List<Proizvod>>
+        {
+            Podaci = await _context.Proizvodi
+                .Where(p => p.Kategorija.Url.ToLower().Equals(kategorijaUrl))
+                .ToListAsync()
+        };
+
+        return response;
+       
+    }
 }
