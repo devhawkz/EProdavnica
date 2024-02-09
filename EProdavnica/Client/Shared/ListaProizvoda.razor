@@ -1,4 +1,5 @@
 ﻿@inject IProizvodService ProizvodService;
+@implements IDisposable
 
 @if(ProizvodService.Proizvodi == null || ProizvodService.Proizvodi.Count == 0)
 {
@@ -32,8 +33,13 @@ else
 
 @code {
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        await ProizvodService.GetProizvodi();
+        ProizvodService.PromenaKategorije += StateHasChanged; 
+    }
+
+    public void Dispose()
+    {
+        ProizvodService.PromenaKategorije -= StateHasChanged;
     }
 }

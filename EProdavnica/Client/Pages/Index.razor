@@ -1,5 +1,17 @@
-﻿@page "/"
+﻿@page "/"  
+@page "/{kategorijaUrl}"
+@inject IProizvodService ProizvodService
 
 <PageTitle>E-Prodavnica</PageTitle>
 
 <ListaProizvoda/>
+
+@code{
+    [Parameter]
+    public string? KategorijaUrl { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await ProizvodService.GetProizvodi(KategorijaUrl);
+    }
+}
