@@ -11,10 +11,9 @@ public class Proizvod
     
     public string SlikaUrl { get; set; } = string.Empty;
 
-    [Column(TypeName = "decimal(18,2)")]
-    public decimal Cena { get; set; }
-
     public Kategorija? Kategorija { get; set; }
 
     public int KategorijaId {  get; set; }
+
+    public List<VarijantaProizvoda> Varijante { get; set; } = new List<VarijantaProizvoda>();
 }
