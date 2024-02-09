@@ -1,8 +1,10 @@
 global using EProdavnica.Shared;
 global using System.Net.Http.Json;
 global using EProdavnica.Client.Services.ProductService;
+global using EProdavnica.Client.Services.CategoryService;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+
 
 namespace EProdavnica.Client
 {
@@ -16,6 +18,7 @@ namespace EProdavnica.Client
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             builder.Services.AddScoped<IProizvodService, ProizvodService>();
+            builder.Services.AddScoped<IKategorijaService, KategorijaService>();
 
             await builder.Build().RunAsync();
         }
