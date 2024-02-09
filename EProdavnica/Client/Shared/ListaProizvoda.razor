@@ -21,7 +21,7 @@ else
                         <h4 class="mb-0">@proizvod.Naziv</h4>
                     </a>
                     <p>@proizvod.Opis</p>
-                    <h5 class="price">$@*proizvod.Cena*@</h5>
+                    <h5 class="price">@GetCenaText(proizvod)</h5>
                 </div>
             </li>
         }
@@ -41,5 +41,20 @@ else
     public void Dispose()
     {
         ProizvodService.PromenaKategorije -= StateHasChanged;
+    }
+
+    private string GetCenaText(Proizvod proizvod)
+    {
+        var varijante = proizvod.Varijante;
+
+        if (varijante.Count == 0)
+            return string.Empty;
+
+        else if (varijante.Count == 1)
+            return $"${varijante[0].Cena}";
+
+        decimal minCena = varijante.Min(v => v.Cena);
+        return $"Početna cena je: ${minCena}";
+
     }
 }

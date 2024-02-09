@@ -13,7 +13,11 @@ public class ProizvodService : IProizvodService
     public async Task<ServiceResponse<Proizvod>> GetProizvodAsync(int proizvodId)
     {
         var response = new ServiceResponse<Proizvod>();
-        var proizvod = await _context.Proizvodi.FindAsync(proizvodId);
+        var proizvod = await _context.Proizvodi
+            .Include(p => p.Varijante)
+            .ThenInclude(v => v.TipProizvoda)
+            .FirstOrDefaultAsync(p => p.Id == proizvodId);
+        
         if(proizvod == null) 
         {
             response.Uspesno = false;
@@ -31,7 +35,7 @@ public class ProizvodService : IProizvodService
     {
         var response = new ServiceResponse<List<Proizvod>>
         {
-            Podaci = await _context.Proizvodi.ToListAsync()
+            Podaci = await _context.Proizvodi.Include(p => p.Varijante).ToListAsync()
         };
 
         return response;
@@ -43,6 +47,7 @@ public class ProizvodService : IProizvodService
         {
             Podaci = await _context.Proizvodi
                 .Where(p => p.Kategorija.Url.ToLower().Equals(kategorijaUrl))
+                .Include(p => p.Varijante)
                 .ToListAsync()
         };
 
