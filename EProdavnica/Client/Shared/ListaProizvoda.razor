@@ -3,7 +3,7 @@
 
 @if(ProizvodService.Proizvodi == null || ProizvodService.Proizvodi.Count == 0)
 {
-    <span>Učitavanje proizvoda...</span>
+    <span>@ProizvodService.Poruka</span>
 }
 else
 {
@@ -35,12 +35,12 @@ else
 
     protected override void OnInitialized()
     {
-        ProizvodService.PromenaKategorije += StateHasChanged; 
+        ProizvodService.PromenaProizvoda += StateHasChanged; 
     }
 
     public void Dispose()
     {
-        ProizvodService.PromenaKategorije -= StateHasChanged;
+        ProizvodService.PromenaProizvoda -= StateHasChanged;
     }
 
     private string GetCenaText(Proizvod proizvod)
