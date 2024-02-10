@@ -15,13 +15,27 @@ else
         <div class="media-body">
             <h2>@proizvod.Naziv</h2>
             <p>@proizvod.Opis</p>
-            <h4 class="price">$@*proizvod.Cena*@</h4>
+            @if(GetIzabranuVarijantu() != null)
+            {
+                @if(GetIzabranuVarijantu().OriginalnaCena > GetIzabranuVarijantu().Cena)
+                {
+                    <h6 class="text-muted original-price">
+                        $@GetIzabranuVarijantu().OriginalnaCena
+                    </h6>
+                }
+                <h4 class="price">
+                    $@GetIzabranuVarijantu().Cena
+                </h4>
+
+            }
+
         </div>
     </div>
 }
 @code {
     private Proizvod? proizvod = null;
     private string _poruka = string.Empty;
+    private int trenutniTipProizvodaID = 1;
 
     [Parameter]
     public int Id { get; set; }
@@ -39,6 +53,17 @@ else
         else
         {
             proizvod = rezultat.Podaci;
+
+            if (proizvod.Varijante.Count > 0)
+            {
+                trenutniTipProizvodaID = proizvod.Varijante[0].TipProizvodaId;
+            }
         }
+    }
+
+    private VarijantaProizvoda GetIzabranuVarijantu()
+    {
+        var varijanta = proizvod.Varijante.FirstOrDefault(v => v.TipProizvodaId == trenutniTipProizvodaID);
+        return varijanta;
     }
 }
