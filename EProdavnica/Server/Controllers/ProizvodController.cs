@@ -21,7 +21,7 @@ public class ProizvodController : ControllerBase
     }
 
     [HttpGet("{proizvodId}")]
-    public async Task<ActionResult <ServiceResponse<Proizvod>>> GetProizvod(int proizvodId)
+    public async Task<ActionResult<ServiceResponse<Proizvod>>> GetProizvod(int proizvodId)
     {
         var rezultat = await _proizvodiService.GetProizvodAsync(proizvodId);
         return Ok(rezultat);
@@ -32,5 +32,20 @@ public class ProizvodController : ControllerBase
     {
         var rezultat = await _proizvodiService.GetProizvodiByKategorijaAsync(kategorijaUrl);
         return Ok(rezultat);
+    }
+
+    [HttpGet("pretraga/{tekstPretrage}")]
+    public async Task<ActionResult<ServiceResponse<List<Proizvod>>>> PretraziProizvode(string tekstPretrage)
+    {
+        var rezultat = await _proizvodiService.PretragaProizvodaAsync(tekstPretrage);
+        return Ok(rezultat);
+    }
+
+    [HttpGet("predlozipretrage/{tekstPretrage}")]
+    public async Task<ActionResult<ServiceResponse<List<Proizvod>>>> PredloziZaPretraguProizvoda(string tekstPretrage)
+    {
+        var rezultat = await _proizvodiService.GetPredloziZaPretraguProizvodaAsync(tekstPretrage);
+        return Ok(rezultat);
+
     }
 }
