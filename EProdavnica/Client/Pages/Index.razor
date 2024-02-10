@@ -1,5 +1,7 @@
 ﻿@page "/"  
+@page "/pretraga/{tekstPretrage}"
 @page "/{kategorijaUrl}"
+
 @inject IProizvodService ProizvodService
 
 <PageTitle>E-Prodavnica</PageTitle>
@@ -8,10 +10,23 @@
 
 @code{
     [Parameter]
-    public string? KategorijaUrl { get; set; }
+    public string? KategorijaUrl { get; set; } = null;
+
+    [Parameter]
+    public string? TekstPretrage { get; set; } = null;
 
     protected override async Task OnParametersSetAsync()
     {
-        await ProizvodService.GetProizvodi(KategorijaUrl);
+        // ako u url-u postoji tekst pretrage uradi vrati samo takve proizvode
+        if(TekstPretrage != null)
+        {
+            await ProizvodService.PretragaProizvoda(TekstPretrage);
+        }
+
+        // ako ne postoji vrati sve proizvode odredjene kategorije ili sve proizvode 
+        else
+        {
+            await ProizvodService.GetProizvodi(KategorijaUrl);
+        }
     }
 }
