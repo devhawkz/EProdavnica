@@ -15,6 +15,21 @@ else
         <div class="media-body">
             <h2>@proizvod.Naziv</h2>
             <p>@proizvod.Opis</p>
+            
+            @if(proizvod.Varijante != null && proizvod.Varijante.Count > 0)
+            {
+                /* dobijamo select box u kojem se nalaze svi tipovi datog proizvoda i kada izaberemo tip proizvoda, prikazuje
+                se odgovarajuca cena */
+                <div class="mb-3">
+                    <select class="form-select" @bind="trenutniTipProizvodaID">
+                        @foreach(var varijanta in proizvod.Varijante)
+                        {
+                            <option value="@varijanta.TipProizvodaId">@varijanta.TipProizvoda.Ime</option>
+                        }
+                    </select>
+                </div>    
+            }
+
             @if(GetIzabranuVarijantu() != null)
             {
                 @if(GetIzabranuVarijantu().OriginalnaCena > GetIzabranuVarijantu().Cena)
@@ -35,6 +50,8 @@ else
 @code {
     private Proizvod? proizvod = null;
     private string _poruka = string.Empty;
+    
+    // default vrednost za tip proizvoda kada se ucita komponenta
     private int trenutniTipProizvodaID = 1;
 
     [Parameter]
@@ -56,6 +73,7 @@ else
 
             if (proizvod.Varijante.Count > 0)
             {
+                // ako proizvoid ima varijante, stavi da je prva varijanta ona koju je korisnik izabrao
                 trenutniTipProizvodaID = proizvod.Varijante[0].TipProizvodaId;
             }
         }
@@ -63,6 +81,7 @@ else
 
     private VarijantaProizvoda GetIzabranuVarijantu()
     {
+        // vraca varijantu ako se trenutniTipProizvodaId poklapa sa nekim TipomPRoizvoda iz bilo koje varijante proizvoda.
         var varijanta = proizvod.Varijante.FirstOrDefault(v => v.TipProizvodaId == trenutniTipProizvodaID);
         return varijanta;
     }
