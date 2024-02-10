@@ -48,7 +48,7 @@ public class ProizvodService : IProizvodService
 
         if(Proizvodi.Count == 0)
         {
-            Poruka = "Nijedan proizvod nije promenjen";
+            Poruka = "Nijedan takav proizvod nije pronadjen!";
         }
 
         PromenaProizvoda.Invoke();
