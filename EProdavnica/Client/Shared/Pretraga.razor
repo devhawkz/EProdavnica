@@ -1,0 +1,52 @@
+﻿@inject NavigationManager NavigationManager
+@inject IProizvodService ProizvodiService
+
+<div class="input-group">
+    <input @bind-value="tekstPretrage" @bind-value:event="oninput" type="search" list="proizvodi" @onkeyup="UpravljanjePretragom" class="form-control" placeholder="Pretraži..." @ref="inputPretrage"/>
+
+    <datalist id="proizvodi">
+        @foreach(var predlog in predlozi)
+        {
+            <option>@predlog</option>
+        }
+    </datalist>
+    <div class="input-group-append">
+        <button class="btn btn-primary" @onclick="PretragaProizvoda">
+            <span class="oi oi-magnifying-glass"></span>
+        </button>
+    </div>
+</div>
+
+@code {
+    private string tekstPretrage = string.Empty;
+    private List<string> predlozi = new();
+    protected ElementReference inputPretrage;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if(firstRender) // proverava da li se komponenta prvi put renderovala, da se ne bi non stop izvrsavao kod dole
+        {
+            await inputPretrage.FocusAsync(); // stavlja se fokus na HTML element (u ovom slucaju search)
+        }
+    }
+
+    public void PretragaProizvoda()
+    {
+        NavigationManager.NavigateTo($"pretraga/{tekstPretrage}"); // preusmerava korisnika na komponentu sa datim url-om kada se klikne na dugme za pretragu
+    }
+
+    public async Task UpravljanjePretragom(KeyboardEventArgs args)
+    {
+        //ako je pritisnut taster Enter ili ako je args.Key == null to obicno znaci da je korisnik zavrsio sa unosom u polje za pretragu i da zeli da pokrene pretragu pa se stoga poziva metoda PretragaProizvoda()
+        if (args.Key == null || args.Key.Equals("enter"))
+        {
+            PretragaProizvoda();
+        }
+
+        //ovo se obicno radi kako bi se izbeglo pokretanje predloga za veoma kratke unose koji mozda nisu dovoljno specificni. Ako je duzi od 1 karaktera onda se poziva metoda GetPredloziZaPretraguProizvoda(tekstPretrage) za dobijanje liste predloga
+        else if(tekstPretrage.Length > 1)
+        {
+            predlozi = await ProizvodiService.GetPredloziZaPretraguProizvoda(tekstPretrage);
+        }
+    }
+}

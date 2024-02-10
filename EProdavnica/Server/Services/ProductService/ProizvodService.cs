@@ -32,7 +32,7 @@ public class ProizvodService : IProizvodService
                 //ova promenljiva sadrzi sve znakove interpunkcije iz opisa proizvoda, po jedan od svakog
                 var interpunkcija = proizvod.Opis.Where(char.IsPunctuation).Distinct().ToArray();
 
-                //ova promenljkiva sadrzi niz reci bez znakova intepunkcije u njima
+                //ova promenljiva sadrzi niz reci bez znakova intepunkcije u njima
                 var reci = proizvod.Opis.Split()
                         .Select(s => s.Trim(interpunkcija));
 
