@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EProdavnica.Shared.DTO;
+using Microsoft.AspNetCore.Mvc;
 
 namespace EProdavnica.Server.Controllers;
 
@@ -34,10 +35,10 @@ public class ProizvodController : ControllerBase
         return Ok(rezultat);
     }
 
-    [HttpGet("pretraga/{tekstPretrage}")]
-    public async Task<ActionResult<ServiceResponse<List<Proizvod>>>> PretraziProizvode(string tekstPretrage)
+    [HttpGet("pretraga/{tekstPretrage}/{trenutnaStrana}")]
+    public async Task<ActionResult<ServiceResponse<RezultatPretrageProizvoda>>> PretraziProizvode(string tekstPretrage, int trenutnaStrana = 1)
     {
-        var rezultat = await _proizvodiService.PretragaProizvodaAsync(tekstPretrage);
+        var rezultat = await _proizvodiService.PretragaProizvodaAsync(tekstPretrage, trenutnaStrana);
         return Ok(rezultat);
     }
 

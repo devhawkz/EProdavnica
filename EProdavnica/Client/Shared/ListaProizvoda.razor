@@ -27,6 +27,15 @@ else
         }
 
     </ul>
+    //petlja koja broji strane od 1 do poslednje strane
+    @for(var i = 1; i <= ProizvodService.UkupanBrojStrana; i++)
+    {
+        // i predstavlja broj strane ako je jednak sa trenutnom stranom koristi prvu css klasu ako nije koristi drugu css klasu
+        <a class="btn
+                    @(i == ProizvodService.TrenutnaStrana ? "btn-info" : "btn-outline-info") 
+                    page-selection"
+                    href ="/pretraga/@ProizvodService.PoslednjiTekstPretrage/@i">@i</a>
+    }
 }
 
 

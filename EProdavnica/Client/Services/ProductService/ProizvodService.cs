@@ -1,5 +1,7 @@
 ﻿
 
+using EProdavnica.Shared.DTO;
+
 namespace EProdavnica.Client.Services.ProductService;
 
 public class ProizvodService : IProizvodService
@@ -11,6 +13,12 @@ public class ProizvodService : IProizvodService
     public List<Proizvod> Proizvodi { get ; set; } = new List<Proizvod>();
 
     public string Poruka { get; set; } = "Učitavanje proizvoda...";
+
+    public int TrenutnaStrana { get; set; } = 1;
+
+    public int UkupanBrojStrana { get; set; } = 0;
+
+    public string PoslednjiTekstPretrage { get; set; } = string.Empty;
 
     public ProizvodService(HttpClient http)
     {
@@ -26,6 +34,14 @@ public class ProizvodService : IProizvodService
         if (rezultat != null && rezultat.Podaci != null)
             Proizvodi = rezultat.Podaci;
 
+        TrenutnaStrana = 1;
+        UkupanBrojStrana = 0;
+
+        if(Proizvodi.Count() == 0)
+        {
+            Poruka = "Nijedan proizvod nije pronađen";
+        }
+
         PromenaProizvoda.Invoke();
     }
 
@@ -37,13 +53,17 @@ public class ProizvodService : IProizvodService
         
     }
 
-    public async Task PretragaProizvoda(string tekstPretrage)
+    public async Task PretragaProizvoda(string tekstPretrage, int trenutnaStrana)
     {
-        var rezultat = await _http.GetFromJsonAsync<ServiceResponse<List<Proizvod>>>($"api/proizvod/pretraga/{tekstPretrage}");
+        PoslednjiTekstPretrage = tekstPretrage;
+
+        var rezultat = await _http.GetFromJsonAsync<ServiceResponse<RezultatPretrageProizvoda>>($"api/proizvod/pretraga/{tekstPretrage}/{trenutnaStrana}");
 
         if(rezultat != null && rezultat.Podaci != null)
         {
-            Proizvodi = rezultat.Podaci;
+            Proizvodi = rezultat.Podaci.Proizvodi;
+            TrenutnaStrana = rezultat.Podaci.TrenutnaStrana;
+            UkupanBrojStrana = rezultat.Podaci.UkupanBrojStrana;
         }
 
         if(Proizvodi.Count == 0)

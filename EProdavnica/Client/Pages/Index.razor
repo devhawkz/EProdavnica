@@ -1,5 +1,5 @@
 ﻿@page "/"  
-@page "/pretraga/{tekstPretrage}"
+@page "/pretraga/{tekstPretrage}/{trenutnaStrana:int}"
 @page "/{kategorijaUrl}"
 
 @inject IProizvodService ProizvodService
@@ -23,12 +23,15 @@ else
     [Parameter]
     public string? TekstPretrage { get; set; } = null;
 
+    [Parameter]
+    public int TrenutnaStrana { get; set; } = 1;
+
     protected override async Task OnParametersSetAsync()
     {
         // ako u url-u postoji tekst pretrage uradi vrati samo takve proizvode
         if(TekstPretrage != null)
         {
-            await ProizvodService.PretragaProizvoda(TekstPretrage);
+            await ProizvodService.PretragaProizvoda(TekstPretrage, TrenutnaStrana);
         }
 
         // ako ne postoji vrati sve proizvode odredjene kategorije ili sve proizvode 

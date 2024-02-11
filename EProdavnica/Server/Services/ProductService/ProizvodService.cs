@@ -1,4 +1,5 @@
 ﻿
+using EProdavnica.Shared.DTO;
 using System.Net.WebSockets;
 using System.Reflection.Metadata.Ecma335;
 
@@ -112,13 +113,35 @@ public class ProizvodService : IProizvodService
        
     }
 
-    public async Task<ServiceResponse<List<Proizvod>>> PretragaProizvodaAsync(string tekstPretrage)
+    public async Task<ServiceResponse<RezultatPretrageProizvoda>> PretragaProizvodaAsync(string tekstPretrage, int trenutnaStrana)
     {
-        var response = new ServiceResponse<List<Proizvod>>
-        {
+        var brojElemenataPoStrani = 2f; // broj proizvoda po strani
 
-            
-            Podaci = await PronadjiProizvodePoTekstuPretrage(tekstPretrage)
+        // formula za izracunavanje ukupnog broja strana od ukupnog broja proizvoda i broja mogucih proizvoda na 1 strani
+        var ukupanBrojStrana = Math.Ceiling((await PronadjiProizvodePoTekstuPretrage(tekstPretrage)).Count() / brojElemenataPoStrani);
+
+        // 1. trazimo proizvod koji ili u svom nazivu sadrzi tekstPretrage ili u svom opisu, zatim ukljucujemo u zahtev podataka iz baze i podatke o varijantama i zatim preskacemo sve proizvode koji ne pripadaju datoj strani i zatim uzimamo od preostalih elemenata onoliko uzastopnih elemenata koliko zelimo da se prikazu na jednoj strani (brojElemeanataNaPojedinacnojStrani).
+
+       
+        var proizvodi = await _context.Proizvodi
+                        .Where(p => p.Naziv.ToLower().Contains(tekstPretrage.ToLower())
+                               ||
+                               p.Opis.ToLower().Contains(tekstPretrage.ToLower()))
+                        .Include(p => p.Varijante)
+                        .Skip((trenutnaStrana - 1) * (int)brojElemenataPoStrani)
+                        .Take((int)brojElemenataPoStrani)
+                        .ToListAsync();
+
+        var response = new ServiceResponse<RezultatPretrageProizvoda>
+        {
+            Podaci = new RezultatPretrageProizvoda
+                {
+                    Proizvodi = proizvodi,
+                    UkupanBrojStrana = (int)ukupanBrojStrana,
+                    TrenutnaStrana = trenutnaStrana
+                }
+
+
         };
 
         return response;

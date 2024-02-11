@@ -1,4 +1,6 @@
-﻿namespace EProdavnica.Server.Services.ProductService;
+﻿using EProdavnica.Shared.DTO;
+
+namespace EProdavnica.Server.Services.ProductService;
 
 public interface IProizvodService
 {
@@ -8,7 +10,7 @@ public interface IProizvodService
     
     Task<ServiceResponse<List<Proizvod>>> GetProizvodiByKategorijaAsync(string kategorijaUrl);
     
-    Task<ServiceResponse<List<Proizvod>>> PretragaProizvodaAsync(string tekstPretrage);
+    Task<ServiceResponse<RezultatPretrageProizvoda>> PretragaProizvodaAsync(string tekstPretrage, int trenutnaStrana);
     
     Task<ServiceResponse<List<string>>> GetPredloziZaPretraguProizvodaAsync(string tekstPretrage);
 
