@@ -5,6 +5,7 @@ global using EProdavnica.Client.Services.CategoryService;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Blazored.LocalStorage;
+using EProdavnica.Client.Services.CartService;
 
 
 namespace EProdavnica.Client
@@ -27,6 +28,7 @@ namespace EProdavnica.Client
             
             builder.Services.AddScoped<IKategorijaService, KategorijaService>();
 
+            builder.Services.AddScoped<IKorpaService, KorpaService>();
             await builder.Build().RunAsync();
         }
     }
