@@ -1,5 +1,6 @@
 ﻿@page "/proizvod/{id:int}"
 @inject IProizvodService ProizvodService
+@inject IKorpaService KorpaService
 
 @if(proizvod == null)
 {
@@ -43,14 +44,17 @@ else
                 </h4>
 
             }
-
+            <!--Dugme koje dodaje proizvod u korpu-->
+            <button class="btn btn-primary" @onclick="DodajUKorpu">
+                <i class="oi oi-cart"></i>&nbsp;&nbsp;&nbsp;Dodaj u korpu
+            </button>
         </div>
     </div>
 }
 @code {
     private Proizvod? proizvod = null;
     private string _poruka = string.Empty;
-    
+
     // default vrednost za tip proizvoda kada se ucita komponenta
     private int trenutniTipProizvodaID = 1;
 
@@ -81,8 +85,20 @@ else
 
     private VarijantaProizvoda GetIzabranuVarijantu()
     {
-        // vraca varijantu ako se trenutniTipProizvodaId poklapa sa nekim TipomPRoizvoda iz bilo koje varijante proizvoda.
+        // vraca varijantu ako se trenutniTipProizvodaId poklapa sa nekim TipomProizvoda iz bilo koje varijante proizvoda.
         var varijanta = proizvod.Varijante.FirstOrDefault(v => v.TipProizvodaId == trenutniTipProizvodaID);
         return varijanta;
+    }
+    private async Task DodajUKorpu()
+    {
+        //Na osnovu varijante proizvoda dobijamo tip proizvoda i proizvod
+        var varijantaProizvoda = GetIzabranuVarijantu();
+        var proizvodUKorpi = new ProizvodUKorpi
+            {
+                ProizvodId = varijantaProizvoda.ProizvodId,
+                TipProizvodaId = varijantaProizvoda.TipProizvodaId
+            };
+
+        await KorpaService.DodajUKorpu(proizvodUKorpi);
     }
 }

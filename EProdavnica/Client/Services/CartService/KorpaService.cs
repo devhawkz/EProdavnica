@@ -32,6 +32,8 @@ public class KorpaService : IKorpaService
 
         // dodaje vrednosti iz korpe u lokalno skladiste pod kljucem korpa
         await _localStorage.SetItemAsync("korpa", korpa);
+    
+        OnChange.Invoke();
     }
 
 

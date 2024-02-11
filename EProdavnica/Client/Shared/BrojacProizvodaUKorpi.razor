@@ -1,11 +1,29 @@
-﻿<a href="korpa" class="btn btn-info">
+﻿@inject IKorpaService KorpaService
+@inject ISyncLocalStorageService LokalnoSkladiste
+@implements IDisposable
+
+<a href="korpa" class="btn btn-info">
     <!--Ikonica za korpu-->
     <i class="oi oi-cart"></i>
 
     <!--Oznacava broj proizvoda u korpi-->
-    <span class="badge">0</span>
+    <span class="badge">@GetBrojProizvodaIzKorpe()</span>
 </a>
 
 @code {
 
+    private int GetBrojProizvodaIzKorpe()
+    {
+        var korpa = LokalnoSkladiste.GetItem<List<ProizvodUKorpi>>("korpa");
+        return korpa != null ? korpa.Count() : 0;
+    }
+    protected override void OnInitialized()
+    {
+        KorpaService.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        KorpaService.OnChange -= StateHasChanged;
+    }
 }
