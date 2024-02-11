@@ -1,0 +1,47 @@
+﻿@inject IProizvodService ProizvodService
+@implements IDisposable
+
+<centere><h2>Preporučeni proizvodi</h2></centere>
+@if(ProizvodService.Proizvodi == null || ProizvodService.Proizvodi.Count == 0)
+{
+    <span>@ProizvodService.Poruka</span>
+}
+
+else
+{
+    <div class="container">
+        @foreach(var proizvod in ProizvodService.Proizvodi)
+        {
+            if(proizvod.Preporuceni)
+            {
+                <div class="featured-product">
+                    <div>
+                        <a href="proizvod/@proizvod.Id">
+                            <img src="@proizvod.SlikaUrl" alt="@proizvod.Naziv"/>    
+                        </a>
+                    </div>
+                    <h4><a href="proizvod/@proizvod.Id">@proizvod.Naziv</a></h4>
+                    @if(proizvod.Varijante != null && proizvod.Varijante.Count > 0)
+                    {
+                        <h5 class="price">
+                            $@proizvod.Varijante[0].Cena
+                        </h5>
+                    }
+                </div>
+            }
+        }
+    </div>
+}
+
+
+@code {
+    protected override void OnInitialized()
+    {
+        ProizvodService.PromenaProizvoda += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        ProizvodService.PromenaProizvoda -= StateHasChanged;
+    }
+}

@@ -15,5 +15,7 @@ public class Proizvod
 
     public int KategorijaId {  get; set; }
 
+    public bool Preporuceni { get; set; } = false;
+
     public List<VarijantaProizvoda> Varijante { get; set; } = new List<VarijantaProizvoda>();
 }

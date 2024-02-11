@@ -1,5 +1,6 @@
 ﻿
 using System.Net.WebSockets;
+using System.Reflection.Metadata.Ecma335;
 
 namespace EProdavnica.Server.Services.ProductService;
 
@@ -18,7 +19,7 @@ public class ProizvodService : IProizvodService
 
         List<string> rezultat = new();
 
-        foreach (var proizvod in proizvodi) 
+        foreach (var proizvod in proizvodi)
         {
             //proveravamo da li se tekstPretrage sadrzi u nazivu bilo kog proizvoda
             if (proizvod.Naziv.Contains(tekstPretrage, StringComparison.OrdinalIgnoreCase))
@@ -27,7 +28,7 @@ public class ProizvodService : IProizvodService
                 rezultat.Add(proizvod.Naziv);
             }
 
-            if(proizvod.Opis != null)
+            if (proizvod.Opis != null)
             {
                 //ova promenljiva sadrzi sve znakove interpunkcije iz opisa proizvoda, po jedan od svakog
                 var interpunkcija = proizvod.Opis.Where(char.IsPunctuation).Distinct().ToArray();
@@ -39,7 +40,7 @@ public class ProizvodService : IProizvodService
                 //Dodajemo foreach koji ce za svaku rec iz niza reci da proveri da li sadrzi tekstPretrage i ako ga sadrzi da li se vec ne nalazi u promenljivoj rezultat (sadrzi sve odgovarajuce predloge).
                 foreach (var rec in reci)
                 {
-                    if(rec.Contains(tekstPretrage, StringComparison.OrdinalIgnoreCase) && !rezultat.Contains(rec))
+                    if (rec.Contains(tekstPretrage, StringComparison.OrdinalIgnoreCase) && !rezultat.Contains(rec))
                     {
                         rezultat.Add(rec);
                     }
@@ -49,6 +50,22 @@ public class ProizvodService : IProizvodService
 
         return new ServiceResponse<List<string>> { Podaci = rezultat };
     }
+
+    public async Task<ServiceResponse<List<Proizvod>>> GetPreporuceneProizvodeAsync()
+    {
+        var response = new ServiceResponse<List<Proizvod>>
+        {
+            Podaci = await _context.Proizvodi
+                    .Where(p => p.Preporuceni)
+                    .Include(p => p.Varijante)
+                    .ToListAsync()
+        };
+        return response;
+    }
+
+   
+
+    
 
     public async Task<ServiceResponse<Proizvod>> GetProizvodAsync(int proizvodId)
     {

@@ -48,4 +48,12 @@ public class ProizvodController : ControllerBase
         return Ok(rezultat);
 
     }
+
+    [HttpGet("preporuceno")]
+    public async Task<ActionResult<ServiceResponse<List<Proizvod>>>> GetPreporuceneProizvode()
+    {
+        var rezultat = await _proizvodiService.GetPreporuceneProizvodeAsync();
+        return Ok(rezultat);
+
+    }
 }

@@ -6,7 +6,15 @@
 
 <PageTitle>E-Prodavnica</PageTitle>
 
-<ListaProizvoda/>
+@if (TekstPretrage == null && KategorijaUrl == null)
+{
+    <PreporuceniProizvodi />
+}
+else
+{
+    <ListaProizvoda />
+}
+
 
 @code{
     [Parameter]

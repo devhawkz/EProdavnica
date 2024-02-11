@@ -20,7 +20,7 @@ public class ProizvodService : IProizvodService
     public async Task GetProizvodi(string? kategorijaUrl = null)
     {
         var rezultat = kategorijaUrl == null ?
-            await _http.GetFromJsonAsync<ServiceResponse<List<Proizvod>>>("api/proizvod") :
+            await _http.GetFromJsonAsync<ServiceResponse<List<Proizvod>>>("api/proizvod/preporuceno") :
             await _http.GetFromJsonAsync<ServiceResponse<List<Proizvod>>>($"api/proizvod/kategorija/{kategorijaUrl}");
         
         if (rezultat != null && rezultat.Podaci != null)
