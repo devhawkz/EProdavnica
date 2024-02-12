@@ -1,4 +1,6 @@
-﻿namespace EProdavnica.Client.Services.CartService;
+﻿using EProdavnica.Shared.DTO;
+
+namespace EProdavnica.Client.Services.CartService;
 
 public interface IKorpaService
 {
@@ -7,6 +9,8 @@ public interface IKorpaService
 
     Task DodajUKorpu(ProizvodUKorpi proizvodUKorpi);
 
-    // pre nego sto obrisemo proizvod iz korpe uzimamo sve proizvode iz korpe
-    Task<List<ProizvodUKorpi>> GetProizvodeUKorpi();
+    // pre nego sto obrisemo proizvod iz korpe uzimamo sve proizvode tip ProizvoduKorpi iz korpe
+    Task<List<ProizvodUKorpi>> GetStavkeIzKorpe();
+
+    Task<List<ProizvodiUKorpiResponse>> GetProizvodeIzKorpe(); 
 }

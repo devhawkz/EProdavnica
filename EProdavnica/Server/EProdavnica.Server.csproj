@@ -26,9 +26,5 @@
     <ProjectReference Include="..\Shared\EProdavnica.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Services\CartService\" />
-  </ItemGroup>
-
 
 </Project>

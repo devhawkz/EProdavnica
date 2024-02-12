@@ -1,0 +1,51 @@
+﻿@page "/korpa"
+@inject IKorpaService KorpaService
+
+<PageTitle>Korpa</PageTitle>
+
+<h3>Korpa</h3>
+
+@if (proizvodiUKorpi == null || proizvodiUKorpi.Count() == 0)
+{
+    <span>@poruka</span>
+}
+
+else
+{
+    <div>
+        @foreach(var proizvod in proizvodiUKorpi)
+        {
+            <div class="container">
+                <div class="image-wrapper">
+                    <img src="@proizvod.SlikaUrl" class="image"/>
+                </div>
+                <div class="name">
+                    <h5><a href="/proizvod/@proizvod.ProizvodId">@proizvod.Naziv</a></h5>
+                    <span>@proizvod.TipProizvoda</span>
+                </div>
+                <div class="cart-product-price">$@proizvod.Cena</div>
+            </div>
+        }
+        <div class="cart-product-price">
+            Ukupno za plaćanje (@proizvodiUKorpi.Count): $@proizvodiUKorpi.Sum(proizvod =>proizvod.Cena) 
+        </div>
+    </div>
+}
+@code {
+    List<ProizvodiUKorpiResponse> proizvodiUKorpi = null;
+    string poruka = "Učitavanje korpe ...";
+
+    protected override async Task OnInitializedAsync()
+    {
+        if((await KorpaService.GetStavkeIzKorpe()).Count() == 0)
+        {
+            poruka = "Nemate nijedan proizvod u korpi";
+            proizvodiUKorpi = new List<ProizvodiUKorpiResponse>();
+        }
+
+        else
+        {
+            proizvodiUKorpi = await KorpaService.GetProizvodeIzKorpe();
+        }
+    }
+}

@@ -3,6 +3,7 @@ global using Microsoft.EntityFrameworkCore;
 global using EProdavnica.Server.Data;
 global using EProdavnica.Server.Services.ProductService;
 global using EProdavnica.Server.Services.Categories;
+global using EProdavnica.Server.Services.CartService;
 
 namespace EProdavnica;
 
@@ -25,6 +26,7 @@ public class Program
 
         builder.Services.AddScoped<IProizvodService, ProizvodService>();
         builder.Services.AddScoped<IKategorijaService, KategorijaService>();
+        builder.Services.AddScoped<IKorpaService, KorpaService>();
 
         var app = builder.Build();
 
