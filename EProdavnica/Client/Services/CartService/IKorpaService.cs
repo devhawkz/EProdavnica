@@ -12,5 +12,7 @@ public interface IKorpaService
     // pre nego sto obrisemo proizvod iz korpe uzimamo sve proizvode tip ProizvoduKorpi iz korpe
     Task<List<ProizvodUKorpi>> GetStavkeIzKorpe();
 
-    Task<List<ProizvodiUKorpiResponse>> GetProizvodeIzKorpe(); 
+    Task<List<ProizvodiUKorpiResponse>> GetProizvodeIzKorpe();
+
+    Task IzbrisiProizvodIzKorpe(int proizvodId, int tipProizvodaId);
 }

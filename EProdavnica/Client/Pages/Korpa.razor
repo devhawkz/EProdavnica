@@ -21,7 +21,12 @@ else
                 </div>
                 <div class="name">
                     <h5><a href="/proizvod/@proizvod.ProizvodId">@proizvod.Naziv</a></h5>
-                    <span>@proizvod.TipProizvoda</span>
+                    <span>@proizvod.TipProizvoda</span><br/>
+                    <button class="btn-delete" @onclick="@(() =>
+                        IzbrisiIzKorpe(proizvod.ProizvodId, proizvod.TipProizvodaId))">
+
+                        Obriši
+                </button>
                 </div>
                 <div class="cart-product-price">$@proizvod.Cena</div>
             </div>
@@ -37,7 +42,20 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        if((await KorpaService.GetStavkeIzKorpe()).Count() == 0)
+        await UcitajKorpu();
+    }
+
+    private async Task IzbrisiIzKorpe(int proizvodId, int tipProizvodaId)
+    {
+        await KorpaService.IzbrisiProizvodIzKorpe(proizvodId, tipProizvodaId);
+
+        //ponovno ucitavanje korpe 
+        await UcitajKorpu();
+    }
+
+    private async Task UcitajKorpu()
+    {
+        if ((await KorpaService.GetStavkeIzKorpe()).Count() == 0)
         {
             poruka = "Nemate nijedan proizvod u korpi";
             proizvodiUKorpi = new List<ProizvodiUKorpiResponse>();

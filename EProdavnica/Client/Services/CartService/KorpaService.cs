@@ -65,4 +65,29 @@ public class KorpaService : IKorpaService
 
         return response.Podaci;
     }
+
+    public async Task IzbrisiProizvodIzKorpe(int proizvodId, int tipProizvodaId)
+    {
+        // dobijamo vrednosti iz lokalnog skladista u kojem se nalaze proizvodi iz korpe
+        var korpa = await _lokalnoSkladiste.GetItemAsync<List<ProizvodUKorpi>>("korpa");
+
+        // ako nema proizvoda u korpi uradi ovo
+        if(korpa == null)
+        {
+            return;
+        }
+
+        // pronalazi proizvod sa datim id i id tipa proizvoda
+        var proizvodIzKorpe = korpa.Find(p => p.ProizvodId ==  proizvodId && p.TipProizvodaId == tipProizvodaId);
+
+        // ako korpa nije prazna izbrisi navedeni proizvod iz korpe
+        if(korpa != null)
+        {
+            korpa.Remove(proizvodIzKorpe);
+        }
+
+        // dodaje vrednosti iz korpe u lokalno skladiste pod kljucem korpa
+        await _lokalnoSkladiste.SetItemAsync("korpa", korpa);
+        OnChange.Invoke();
+    }
 }
