@@ -50,7 +50,8 @@ public class KorpaService : IKorpaService
                 SlikaUrl = proizvod.SlikaUrl,
                 Cena = varijantaProizvoda.Cena,
                 TipProizvoda = varijantaProizvoda.TipProizvoda.Ime,
-                TipProizvodaId = varijantaProizvoda.TipProizvoda.Id
+                TipProizvodaId = varijantaProizvoda.TipProizvoda.Id,
+                Kolicina = proizvodIzKorpe.Kolicina
             };
 
             //rezultat.Podaci.Add(proizvodIzKorpeResponse); - Dodaje se objekat proizvodIzKorpeResponse

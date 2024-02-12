@@ -15,4 +15,6 @@ public interface IKorpaService
     Task<List<ProizvodiUKorpiResponse>> GetProizvodeIzKorpe();
 
     Task IzbrisiProizvodIzKorpe(int proizvodId, int tipProizvodaId);
+
+    Task PromeniKolicinu(ProizvodiUKorpiResponse proizvod);
 }

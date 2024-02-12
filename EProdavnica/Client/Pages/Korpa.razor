@@ -22,17 +22,20 @@ else
                 <div class="name">
                     <h5><a href="/proizvod/@proizvod.ProizvodId">@proizvod.Naziv</a></h5>
                     <span>@proizvod.TipProizvoda</span><br/>
+                    <input type="number" value="@proizvod.Kolicina"
+                           @onchange="@((ChangeEventArgs e) => PromeniKolicinu(e,proizvod))"
+                           class="form-control input-quantity" min="1"/>
                     <button class="btn-delete" @onclick="@(() =>
                         IzbrisiIzKorpe(proizvod.ProizvodId, proizvod.TipProizvodaId))">
 
                         Obriši
                 </button>
                 </div>
-                <div class="cart-product-price">$@proizvod.Cena</div>
+                <div class="cart-product-price">$(@proizvod.Cena * @proizvod.Kolicina) </div>
             </div>
         }
         <div class="cart-product-price">
-            Ukupno za plaćanje (@proizvodiUKorpi.Count): $@proizvodiUKorpi.Sum(proizvod =>proizvod.Cena) 
+            Ukupno za plaćanje (@proizvodiUKorpi.Count): $@proizvodiUKorpi.Sum(proizvod => proizvod.Cena * proizvod.Kolicina)
         </div>
     </div>
 }
@@ -65,5 +68,14 @@ else
         {
             proizvodiUKorpi = await KorpaService.GetProizvodeIzKorpe();
         }
+    }
+
+    private async Task PromeniKolicinu(ChangeEventArgs e, ProizvodiUKorpiResponse proizvod)
+    {
+        proizvod.Kolicina = int.Parse(e.Value.ToString());
+        if (proizvod.Kolicina < 1)
+            proizvod.Kolicina = 1;
+
+        await KorpaService.PromeniKolicinu(proizvod);
     }
 }

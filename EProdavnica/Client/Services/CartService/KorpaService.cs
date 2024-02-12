@@ -1,5 +1,6 @@
 ﻿
 using Blazored.LocalStorage;
+using EProdavnica.Shared;
 using EProdavnica.Shared.DTO;
 
 namespace EProdavnica.Client.Services.CartService;
@@ -31,7 +32,16 @@ public class KorpaService : IKorpaService
 
 
         // dodaje proizvod u korpu
-        korpa.Add(proizvodUKorpi);
+        var istiProizvod = korpa.Find(p => p.ProizvodId == proizvodUKorpi.ProizvodId && p.TipProizvodaId == proizvodUKorpi.TipProizvodaId);
+
+        if(istiProizvod == null)
+        {
+            korpa.Add(proizvodUKorpi);
+        }
+        else
+        {
+            istiProizvod.Kolicina += proizvodUKorpi.Kolicina;
+        }
 
         // dodaje vrednosti iz korpe u lokalno skladiste pod kljucem korpa
         await _lokalnoSkladiste.SetItemAsync("korpa", korpa);
@@ -89,5 +99,29 @@ public class KorpaService : IKorpaService
         // dodaje vrednosti iz korpe u lokalno skladiste pod kljucem korpa
         await _lokalnoSkladiste.SetItemAsync("korpa", korpa);
         OnChange.Invoke();
+    }
+
+    public async Task PromeniKolicinu(ProizvodiUKorpiResponse proizvod)
+    {
+        // dobijamo vrednosti iz lokalnog skladista u kojem se nalaze proizvodi iz korpe
+        var korpa = await _lokalnoSkladiste.GetItemAsync<List<ProizvodUKorpi>>("korpa");
+
+        // ako nema proizvoda u korpi uradi ovo
+        if (korpa == null)
+        {
+            return;
+        }
+
+        // pronalazi proizvod sa datim id i id tipa proizvoda
+        var proizvodIzKorpe = korpa.Find(p => p.ProizvodId == proizvod.ProizvodId && p.TipProizvodaId == proizvod.TipProizvodaId);
+
+        // ako korpa nije prazna promeni kolicinu navedeni proizvod iz korpe
+        if (korpa != null)
+        {
+            proizvodIzKorpe.Kolicina = proizvod.Kolicina;
+        }
+
+        // dodaje vrednosti iz korpe u lokalno skladiste pod kljucem korpa
+        await _lokalnoSkladiste.SetItemAsync("korpa", korpa);
     }
 }
