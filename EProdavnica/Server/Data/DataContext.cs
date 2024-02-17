@@ -11,6 +11,7 @@ public class DataContext : DbContext
     public DbSet<Kategorija> Kategorije { get; set; }
     public DbSet<TipProizvoda> TipoviProizvoda { get; set; }
     public DbSet<VarijantaProizvoda> VarijanteProizvoda { get; set; }
+    public DbSet<Korisnik> Korisnici { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
