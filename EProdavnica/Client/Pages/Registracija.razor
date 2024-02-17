@@ -1,0 +1,32 @@
+﻿@page "/registracija"
+
+<PageTitle>Registracija</PageTitle>
+
+<h3>Registracija</h3>
+
+<EditForm Model="korisnik" OnValidSubmit="UpravljanjeRegistracijom">
+    <div class="mb-3">
+        <label for="email">Email</label>
+        <InputText id="email" @bind-Value="korisnik.Email" class="form-control"/>
+    </div>
+
+    <div class="mb-3">
+        <label for="lozinka">Lozinka</label>
+        <InputText id="lozinka" @bind-Value="korisnik.Lozinka" class="form-control"  type="password"/>
+    </div>
+
+    <div class="mb-3">
+        <label for="potvrdaLozinke">Potvrdi lozinku</label>
+        <InputText id="potvrdaLozinke" @bind-Value="korisnik.PotvrdaLozinke" class="form-control" type="password" />
+    </div>
+    <button type="submit" class="btn btn-primary">Pošalji</button>
+</EditForm>
+
+@code {
+    RegistracijaKorisnika korisnik = new RegistracijaKorisnika();
+
+    void UpravljanjeRegistracijom()
+    {
+        Console.WriteLine($"Registruj se pomoću mejla {korisnik.Email}.");
+    }
+}

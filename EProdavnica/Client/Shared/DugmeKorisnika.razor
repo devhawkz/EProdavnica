@@ -1,0 +1,30 @@
+﻿<div class="dropdown">
+    <button @onclick="UpravljanjeMenijemKorisnika"
+            @onfocusout="SakrijMeniKorisnika" 
+            class="btn btn-secondary dropdown-toggle user-button">
+        <i class="oi oi-person"></i>
+    </button>
+
+    <div class="dropdown-menu dropdown-menu-right @MeniKorisnikaCssKlasa">
+        <a href="registracija" class="dropdown-item">Registracija</a>
+    </div>
+</div>
+
+@code {
+    private bool prikaziMeniKorisnika = false;
+
+    private string MeniKorisnikaCssKlasa => prikaziMeniKorisnika ? "show-menu" : null;
+
+    private void UpravljanjeMenijemKorisnika()
+    {
+        // ako je prikazan meni onda ga sakrij i obrnuto
+        prikaziMeniKorisnika = !prikaziMeniKorisnika;
+    }
+
+    private async Task SakrijMeniKorisnika()
+    {
+        // zadrzava izvrsavanje metode na 200ms. Nakon pauze metoda nastavlja sa radom. Nepohodno zbog eventa onfocusout
+        await Task.Delay(200);  
+        prikaziMeniKorisnika = false;
+    }
+}
