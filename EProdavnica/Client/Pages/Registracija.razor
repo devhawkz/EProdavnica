@@ -5,14 +5,15 @@
 <h3>Registracija</h3>
 
 <EditForm Model="korisnik" OnValidSubmit="UpravljanjeRegistracijom">
+    <DataAnnotationsValidator />
     <div class="mb-3">
         <label for="email">Email</label>
-        <InputText id="email" @bind-Value="korisnik.Email" class="form-control"/>
+        <InputText id="email" @bind-Value="korisnik.Email" class="form-control" />
     </div>
 
     <div class="mb-3">
         <label for="lozinka">Lozinka</label>
-        <InputText id="lozinka" @bind-Value="korisnik.Lozinka" class="form-control"  type="password"/>
+        <InputText id="lozinka" @bind-Value="korisnik.Lozinka" class="form-control" type="password" />
     </div>
 
     <div class="mb-3">
@@ -20,6 +21,7 @@
         <InputText id="potvrdaLozinke" @bind-Value="korisnik.PotvrdaLozinke" class="form-control" type="password" />
     </div>
     <button type="submit" class="btn btn-primary">Pošalji</button>
+    <ValidationSummary />
 </EditForm>
 
 @code {
