@@ -1,4 +1,5 @@
 ﻿@page "/registracija"
+@inject IAuthService AuthService
 
 <PageTitle>Registracija</PageTitle>
 
@@ -23,15 +24,28 @@
         <InputText id="potvrdaLozinke" @bind-Value="korisnik.PotvrdaLozinke" class="form-control" type="password" />
         <ValidationMessage For="@(() => korisnik.PotvrdaLozinke)" />
     </div>
+    
     <button type="submit" class="btn btn-primary">Pošalji</button>
+    
+    <div class="text-danger @porukaCssClass">
+        <span>@poruka</span>
+    </div>
     
 </EditForm>
 
 @code {
-    RegistracijaKorisnika korisnik = new RegistracijaKorisnika();
+        RegistracijaKorisnika korisnik = new RegistracijaKorisnika();
 
-    void UpravljanjeRegistracijom()
-    {
-        Console.WriteLine($"Registruj se pomoću mejla {korisnik.Email}.");
-    }
+        string poruka = string.Empty;
+        string porukaCssClass = string.Empty;
+
+        async Task UpravljanjeRegistracijom()
+        {
+            var rezultat = await AuthService.Registracija(korisnik);
+            poruka = rezultat.Poruka;
+            if (!rezultat.Uspesno)
+                porukaCssClass = "text-success";
+            else
+                porukaCssClass = "text-danger";
+        }
 }

@@ -2,10 +2,12 @@ global using EProdavnica.Shared;
 global using System.Net.Http.Json;
 global using EProdavnica.Client.Services.ProductService;
 global using EProdavnica.Client.Services.CategoryService;
+global using EProdavnica.Client.Services.CartService;
+global using EProdavnica.Client.Services.AuthService;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Blazored.LocalStorage;
-using EProdavnica.Client.Services.CartService;
+
 
 
 namespace EProdavnica.Client
@@ -29,6 +31,9 @@ namespace EProdavnica.Client
             builder.Services.AddScoped<IKategorijaService, KategorijaService>();
 
             builder.Services.AddScoped<IKorpaService, KorpaService>();
+
+            builder.Services.AddScoped<IAuthService, AuthService>();
+
             await builder.Build().RunAsync();
         }
     }

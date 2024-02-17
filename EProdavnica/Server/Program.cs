@@ -4,6 +4,7 @@ global using EProdavnica.Server.Data;
 global using EProdavnica.Server.Services.ProductService;
 global using EProdavnica.Server.Services.Categories;
 global using EProdavnica.Server.Services.CartService;
+global using EProdavnica.Server.Services.AuthService;
 
 namespace EProdavnica;
 
@@ -27,6 +28,7 @@ public class Program
         builder.Services.AddScoped<IProizvodService, ProizvodService>();
         builder.Services.AddScoped<IKategorijaService, KategorijaService>();
         builder.Services.AddScoped<IKorpaService, KorpaService>();
+        builder.Services.AddScoped<IAuthService, AuthService>();
 
         var app = builder.Build();
 
