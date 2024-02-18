@@ -115,7 +115,7 @@ public class ProizvodService : IProizvodService
 
     public async Task<ServiceResponse<RezultatPretrageProizvoda>> PretragaProizvodaAsync(string tekstPretrage, int trenutnaStrana)
     {
-        var brojElemenataPoStrani = 2f; // broj proizvoda po strani
+        var brojElemenataPoStrani = 3f; // broj proizvoda po strani
 
         // formula za izracunavanje ukupnog broja strana od ukupnog broja proizvoda i broja mogucih proizvoda na 1 strani
         var ukupanBrojStrana = Math.Ceiling((await PronadjiProizvodePoTekstuPretrage(tekstPretrage)).Count() / brojElemenataPoStrani);

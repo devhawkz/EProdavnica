@@ -3,4 +3,6 @@
 public interface IAuthService
 {
     Task<ServiceResponse<int>> Registracija(RegistracijaKorisnika zahtev);
+
+    Task<ServiceResponse<string>> Prijava(PrijavaKorisnika zahtev);
 }

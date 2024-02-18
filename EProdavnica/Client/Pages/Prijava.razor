@@ -1,0 +1,60 @@
+﻿@page "/prijava"
+@inject IAuthService AuthService
+@inject ILocalStorageService LocalStorage
+@inject NavigationManager NavigationManager
+
+<PageTitle>Prijava</PageTitle>
+
+<h3>Prijava</h3>
+
+<EditForm Model="korisnik" OnValidSubmit="UpravljanjePrijavom">
+    <DataAnnotationsValidator />
+    <div class="mb-3">
+        <label for="email">Email</label>
+        <InputText id="email" @bind-Value="korisnik.Email" class="form-control" />
+        <ValidationMessage For="@(() => korisnik.Email)" />
+    </div>
+
+    <div class="mb-3">
+        <label for="lozinka">Lozinka</label>
+        <InputText id="lozinka" @bind-Value="korisnik.Lozinka" class="form-control" type="password" />
+        <ValidationMessage For="@(() => korisnik.Lozinka)" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Prijava</button>
+
+</EditForm>
+
+<div class="text-danger">
+    <span>@errorPoruka</span>
+</div>
+
+@code {
+    private PrijavaKorisnika korisnik = new PrijavaKorisnika();
+
+    private string errorPoruka = string.Empty;
+
+    private async Task UpravljanjePrijavom()
+    {
+        var rezultat = await AuthService.Prijava(korisnik);
+
+        // ako je uspesna prijava
+        if(rezultat.Uspesno)
+        {
+            errorPoruka = string.Empty;
+
+            // skladistenje jwt tokena u lokalno skladiste pretrazivaca
+            await LocalStorage.SetItemAsync("authToken", rezultat.Podaci);
+
+            // vrsi se redirekcija na pocetnu stranu, za sad
+            NavigationManager.NavigateTo("");
+        }
+
+        else
+        {
+            errorPoruka = rezultat.Poruka;
+        }
+
+
+    }
+}
