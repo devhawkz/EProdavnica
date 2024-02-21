@@ -1,60 +1,44 @@
 ﻿@page "/prijava"
+@using Microsoft.AspNetCore.WebUtilities
 @inject IAuthService AuthService
-@inject ILocalStorageService LocalStorage
+@inject ILocalStorageService LokalnoSkladiste
 @inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <PageTitle>Prijava</PageTitle>
 
 <h3>Prijava</h3>
 
-<EditForm Model="korisnik" OnValidSubmit="UpravljanjePrijavom">
-    <DataAnnotationsValidator />
-    <div class="mb-3">
-        <label for="email">Email</label>
-        <InputText id="email" @bind-Value="korisnik.Email" class="form-control" />
-        <ValidationMessage For="@(() => korisnik.Email)" />
-    </div>
-
-    <div class="mb-3">
-        <label for="lozinka">Lozinka</label>
-        <InputText id="lozinka" @bind-Value="korisnik.Lozinka" class="form-control" type="password" />
-        <ValidationMessage For="@(() => korisnik.Lozinka)" />
-    </div>
-
-    <button type="submit" class="btn btn-primary">Prijava</button>
+<EditForm Model = "korisnik" OnValidSubmit="UpravljajPrijavom">
 
 </EditForm>
-
-<div class="text-danger">
-    <span>@errorPoruka</span>
-</div>
 
 @code {
     private PrijavaKorisnika korisnik = new PrijavaKorisnika();
 
     private string errorPoruka = string.Empty;
 
-    private async Task UpravljanjePrijavom()
+    private string povratniUrl = string.Empty;
+
+    protected override void OnInitialized()
+    {
+        var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
+        if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("returnUrl", out var url))
+        {
+            povratniUrl = url;
+        }
+    }
+
+    private async Task UpravljajPrijavom()
     {
         var rezultat = await AuthService.Prijava(korisnik);
-
-        // ako je uspesna prijava
         if(rezultat.Uspesno)
         {
             errorPoruka = string.Empty;
 
-            // skladistenje jwt tokena u lokalno skladiste pretrazivaca
-            await LocalStorage.SetItemAsync("authToken", rezultat.Podaci);
-
-            // vrsi se redirekcija na pocetnu stranu, za sad
-            NavigationManager.NavigateTo("");
+            await LokalnoSkladiste.SetItemAsync("authToken", rezultat.Podaci);
+            await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            NavigationManager.NavigateTo(povratniUrl);
         }
-
-        else
-        {
-            errorPoruka = rezultat.Poruka;
-        }
-
-
     }
 }

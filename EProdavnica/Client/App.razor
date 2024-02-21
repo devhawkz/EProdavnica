@@ -1,12 +1,14 @@
-﻿<Router AppAssembly="@typeof(App).Assembly">
-    <Found Context="routeData">
-        <RouteView RouteData="@routeData" DefaultLayout="@typeof(ProdavnicaLayout)" />
-        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
-    </Found>
-    <NotFound>
-        <PageTitle>Not found</PageTitle>
-        <LayoutView Layout="@typeof(ProdavnicaLayout)">
-            <p role="alert">Stranica nije pronadjena!</p>
-        </LayoutView>
-    </NotFound>
-</Router>
+﻿<CascadingAuthenticationState>
+   <Router AppAssembly="@typeof(App).Assembly">
+     <Found Context="routeData">
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(ProdavnicaLayout)" />
+            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+        </Found>
+        <NotFound>
+            <PageTitle>Not found</PageTitle>
+            <LayoutView Layout="@typeof(ProdavnicaLayout)">
+                <p role="alert">Greška 404. Stranica nije pronađena.</p>
+            </LayoutView>
+        </NotFound>
+   </Router>
+</CascadingAuthenticationState>

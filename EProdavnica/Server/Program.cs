@@ -5,6 +5,8 @@ global using EProdavnica.Server.Services.ProductService;
 global using EProdavnica.Server.Services.Categories;
 global using EProdavnica.Server.Services.CartService;
 global using EProdavnica.Server.Services.AuthService;
+global using Microsoft.AspNetCore.Components.Authorization;
+using BlazorEcommerce.Client;
 
 namespace EProdavnica;
 
@@ -29,6 +31,9 @@ public class Program
         builder.Services.AddScoped<IKategorijaService, KategorijaService>();
         builder.Services.AddScoped<IKorpaService, KorpaService>();
         builder.Services.AddScoped<IAuthService, AuthService>();
+        builder.Services.AddOptions();
+        builder.Services.AddAuthorizationCore();
+        builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 
         var app = builder.Build();
 

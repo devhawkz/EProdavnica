@@ -4,9 +4,11 @@ global using EProdavnica.Client.Services.ProductService;
 global using EProdavnica.Client.Services.CategoryService;
 global using EProdavnica.Client.Services.CartService;
 global using EProdavnica.Client.Services.AuthService;
+global using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Blazored.LocalStorage;
+using BlazorEcommerce.Client;
 
 
 
@@ -33,6 +35,12 @@ namespace EProdavnica.Client
             builder.Services.AddScoped<IKorpaService, KorpaService>();
 
             builder.Services.AddScoped<IAuthService, AuthService>();
+
+            builder.Services.AddOptions();
+
+            builder.Services.AddAuthorizationCore();
+
+            builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 
             await builder.Build().RunAsync();
         }

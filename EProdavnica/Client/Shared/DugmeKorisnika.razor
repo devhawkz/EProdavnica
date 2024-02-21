@@ -1,4 +1,9 @@
-﻿<div class="dropdown">
+﻿@inject ILocalStorageService LokalnoSkladiste
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+
+
+<div class="dropdown">
     <button @onclick="UpravljanjeMenijemKorisnika"
             @onfocusout="SakrijMeniKorisnika" 
             class="btn btn-secondary dropdown-toggle user-button">
@@ -6,8 +11,16 @@
     </button>
 
     <div class="dropdown-menu dropdown-menu-right @MeniKorisnikaCssKlasa">
-        <a href="prijava" class="dropdown-item">Prijava</a>
-        <a href="registracija" class="dropdown-item">Registracija</a
+        <AuthorizeView>
+            <Authorized>
+                <button class="dropdown-item" @onclick="Odjava">Odjava</button>
+            </Authorized>
+            <NotAuthorized>
+                <a href="login?returnUrl=@NavigationManager.ToBaseRelativePath(NavigationManager.Uri)" class="dropdown-item">Login</a>
+                <a href="prijava" class="dropdown-item">Prijava</a>
+                <a href="registracija" class="dropdown-item">Registracija</a>
+            </NotAuthorized>
+        </AuthorizeView>
     </div>
 </div>
 
@@ -27,5 +40,12 @@
         // zadrzava izvrsavanje metode na 200ms. Nakon pauze metoda nastavlja sa radom. Nepohodno zbog eventa onfocusout
         await Task.Delay(200);  
         prikaziMeniKorisnika = false;
+    }
+
+    private async Task Odjava()
+    {
+        await LokalnoSkladiste.RemoveItemAsync("authToken");
+        await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        NavigationManager.NavigateTo("");
     }
 }
