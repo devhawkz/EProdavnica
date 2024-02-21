@@ -7,6 +7,8 @@ global using EProdavnica.Server.Services.CartService;
 global using EProdavnica.Server.Services.AuthService;
 global using Microsoft.AspNetCore.Components.Authorization;
 using BlazorEcommerce.Client;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 namespace EProdavnica;
 
@@ -17,6 +19,7 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
+
         builder.Services.AddDbContext<DataContext>(options =>
         {
             options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -31,9 +34,19 @@ public class Program
         builder.Services.AddScoped<IKategorijaService, KategorijaService>();
         builder.Services.AddScoped<IKorpaService, KorpaService>();
         builder.Services.AddScoped<IAuthService, AuthService>();
-        builder.Services.AddOptions();
-        builder.Services.AddAuthorizationCore();
-        builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
+        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey =
+                        new SymmetricSecurityKey(System.Text.Encoding.UTF8
+                        .GetBytes(builder.Configuration.GetSection("AppSettings:Token").Value)),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
 
         var app = builder.Build();
 
@@ -52,7 +65,6 @@ public class Program
         }
 
         app.UseSwagger();
-
         app.UseHttpsRedirection();
 
         app.UseBlazorFrameworkFiles();
@@ -60,6 +72,8 @@ public class Program
 
         app.UseRouting();
 
+        app.UseAuthentication();
+        app.UseAuthorization();
 
         app.MapRazorPages();
         app.MapControllers();

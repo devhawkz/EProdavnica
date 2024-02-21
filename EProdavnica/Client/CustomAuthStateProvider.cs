@@ -8,43 +8,43 @@ namespace BlazorEcommerce.Client;
 
 public class CustomAuthStateProvider : AuthenticationStateProvider
 {
-    private readonly ILocalStorageService _lokalnoSkladiste;
+    private readonly ILocalStorageService _localStorageService;
     private readonly HttpClient _http;
 
-    public CustomAuthStateProvider(ILocalStorageService lokalnoSkladiste, HttpClient http)
+    public CustomAuthStateProvider(ILocalStorageService localStorageService, HttpClient http)
     {
-        _lokalnoSkladiste = lokalnoSkladiste;
+        _localStorageService = localStorageService;
         _http = http;
     }
 
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
-        string authToken = await _lokalnoSkladiste.GetItemAsStringAsync("authToken");
+        string authToken = await _localStorageService.GetItemAsStringAsync("authToken");
 
-        var identitet = new ClaimsIdentity();
+        var identity = new ClaimsIdentity();
         _http.DefaultRequestHeaders.Authorization = null;
 
         if (!string.IsNullOrEmpty(authToken))
         {
             try
             {
-                identitet = new ClaimsIdentity(ParseClaimsFromJwt(authToken), "jwt");
+                identity = new ClaimsIdentity(ParseClaimsFromJwt(authToken), "jwt");
                 _http.DefaultRequestHeaders.Authorization =
                     new AuthenticationHeaderValue("Bearer", authToken.Replace("\"", ""));
             }
             catch
             {
-                await _lokalnoSkladiste.RemoveItemAsync("authToken");
-                identitet = new ClaimsIdentity();
+                await _localStorageService.RemoveItemAsync("authToken");
+                identity = new ClaimsIdentity();
             }
         }
 
-        var korisnik = new ClaimsPrincipal(identitet);
-        var stanje = new AuthenticationState(korisnik);
+        var user = new ClaimsPrincipal(identity);
+        var state = new AuthenticationState(user);
 
-        NotifyAuthenticationStateChanged(Task.FromResult(stanje));
+        NotifyAuthenticationStateChanged(Task.FromResult(state));
 
-        return stanje;
+        return state;
     }
 
     private byte[] ParseBase64WithoutPadding(string base64)

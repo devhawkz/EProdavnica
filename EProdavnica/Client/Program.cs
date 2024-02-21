@@ -23,23 +23,15 @@ namespace EProdavnica.Client
             builder.RootComponents.Add<App>("#app");
             
             builder.RootComponents.Add<HeadOutlet>("head::after");
-            
+
             builder.Services.AddBlazoredLocalStorage();
-            
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-            
             builder.Services.AddScoped<IProizvodService, ProizvodService>();
-            
             builder.Services.AddScoped<IKategorijaService, KategorijaService>();
-
             builder.Services.AddScoped<IKorpaService, KorpaService>();
-
             builder.Services.AddScoped<IAuthService, AuthService>();
-
             builder.Services.AddOptions();
-
             builder.Services.AddAuthorizationCore();
-
             builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
 
             await builder.Build().RunAsync();

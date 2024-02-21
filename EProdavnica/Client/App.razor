@@ -1,7 +1,12 @@
 ﻿<CascadingAuthenticationState>
    <Router AppAssembly="@typeof(App).Assembly">
-     <Found Context="routeData">
-            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(ProdavnicaLayout)" />
+        <Found Context="routeData">
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(ProdavnicaLayout)">
+                <NotAuthorized>
+                    <h3>Morate se prijaviti da bi ste videli ovu stranicu.</h3>
+                    <h5>Prijava: <a href="prijava">Prijavi se</a>, ako nemate nalog onda se registrujte: <a href="registracija">Registruj se</a></h5>
+                </NotAuthorized>
+            </AuthorizeRouteView>
             <FocusOnNavigate RouteData="@routeData" Selector="h1" />
         </Found>
         <NotFound>

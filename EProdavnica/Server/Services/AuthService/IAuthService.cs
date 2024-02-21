@@ -7,4 +7,6 @@ public interface IAuthService
     Task<bool> KorisnikPostojiAsync(string email);
 
     Task<ServiceResponse<string>> PrijavaAsync(string email, string lozinka);
+
+    Task<ServiceResponse<bool>> PromenaLozinkeAsync(int korisnikId, string novaLozinka);
 }

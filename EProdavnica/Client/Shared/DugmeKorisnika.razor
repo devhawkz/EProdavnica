@@ -13,11 +13,12 @@
     <div class="dropdown-menu dropdown-menu-right @MeniKorisnikaCssKlasa">
         <AuthorizeView>
             <Authorized>
+                <a href="profil" class="dropdown-item">Profil</a>
+                <hr />
                 <button class="dropdown-item" @onclick="Odjava">Odjava</button>
             </Authorized>
             <NotAuthorized>
-                <a href="login?returnUrl=@NavigationManager.ToBaseRelativePath(NavigationManager.Uri)" class="dropdown-item">Login</a>
-                <a href="prijava" class="dropdown-item">Prijava</a>
+                <a href="prijava?returnUrl=@NavigationManager.ToBaseRelativePath(NavigationManager.Uri)" class="dropdown-item">Prijava</a>
                 <a href="registracija" class="dropdown-item">Registracija</a>
             </NotAuthorized>
         </AuthorizeView>
